@@ -122,7 +122,7 @@ class Account(db.Model, PersistentBase):
             self.phone_number = data.get("phone_number")
             date_joined = data.get("date_joined")
             if date_joined:
-                self.date_joined = date.fromisoformat(date_joined)
+                self.date_joined = date_joined
             else:
                 self.date_joined = date.today()
         except KeyError as error:
