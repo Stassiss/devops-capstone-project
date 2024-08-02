@@ -135,4 +135,25 @@ class TestAccountService(TestCase):
     def test_get_account_not_found(self):
         """It should not Read an Account that is not found"""
         resp = self.client.get(f"{BASE_URL}/0")
-        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)        
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+        
+    def test_get_account_list(self):
+        """It should Get a list of all Accounts"""
+        self._create_accounts(4)
+        response = self.client.get(
+            BASE_URL, content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.get_json()
+        self.assertEqual(len(data), 4)  
+        
+    def test_get_account_list(self):
+        """It should turn empty list when accounts oes not exist with status code 200"""
+        response = self.client.get(
+            BASE_URL, content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.get_json()
+        self.assertEqual(len(data), 0)         
