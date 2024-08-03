@@ -4,7 +4,7 @@ Models for Account
 All of the models are stored in this module
 """
 import logging
-from datetime import date
+from datetime import datetime as date
 from flask_sqlalchemy import SQLAlchemy
 
 logger = logging.getLogger("flask.app")
@@ -92,7 +92,7 @@ class Account(db.Model, PersistentBase):
     email = db.Column(db.String(64))
     address = db.Column(db.String(256))
     phone_number = db.Column(db.String(32), nullable=True)  # phone number is optional
-    date_joined = db.Column(db.Date(), nullable=False, default=date.today())
+    date_joined:date = db.Column(db.Date(), nullable=False, default=date.today())
 
     def __repr__(self):
         return f"<Account {self.name} id=[{self.id}]>"
@@ -121,6 +121,7 @@ class Account(db.Model, PersistentBase):
             self.address = data["address"]
             self.phone_number = data.get("phone_number")
             date_joined = data.get("date_joined")
+            logger.info("Date %s ...", date_joined)
             if date_joined:
                 self.date_joined = date_joined
             else:
