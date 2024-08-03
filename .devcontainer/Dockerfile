@@ -1,20 +1,29 @@
 # The Skills Network Cloud IDE uses Ubuntu 18.04 :(
-FROM ubuntu:18.04
+FROM ubuntu:20.04
+
+# Set non-interactive mode
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Set the desired timezone
+ENV TZ=America/New_York
 
 # Add any tools that are needed
 RUN apt-get update && \
     apt-get install -y sudo \
-        vim \
-        make \
-        git \
-        zip \
-        tree \
-        curl \
-        wget \
-        jq \
-        software-properties-common \
-        python3-pip \
-        python3-dev
+    vim \
+    make \
+    git \
+    zip \
+    tree \
+    curl \
+    wget \
+    jq \
+    software-properties-common \
+    python3-pip \
+    python3-dev
+
+# Configure the timezone
+RUN ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && dpkg-reconfigure --frontend noninteractive tzdata    
 
 # Installing K3D for local Kubernetes development
 RUN curl -s "https://raw.githubusercontent.com/rancher/k3d/main/install.sh" | sudo bash

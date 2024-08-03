@@ -1,10 +1,9 @@
 """
 Models for Account
-
 All of the models are stored in this module
 """
 import logging
-from datetime import datetime as date
+from datetime import date
 from flask_sqlalchemy import SQLAlchemy
 
 logger = logging.getLogger("flask.app")
@@ -92,7 +91,7 @@ class Account(db.Model, PersistentBase):
     email = db.Column(db.String(64))
     address = db.Column(db.String(256))
     phone_number = db.Column(db.String(32), nullable=True)  # phone number is optional
-    date_joined:date = db.Column(db.Date(), nullable=False, default=date.today())
+    date_joined = db.Column(db.Date(), nullable=False, default=date.today())
 
     def __repr__(self):
         return f"<Account {self.name} id=[{self.id}]>"
@@ -111,7 +110,6 @@ class Account(db.Model, PersistentBase):
     def deserialize(self, data):
         """
         Deserializes a Account from a dictionary
-
         Args:
             data (dict): A dictionary containing the resource data
         """
@@ -121,9 +119,8 @@ class Account(db.Model, PersistentBase):
             self.address = data["address"]
             self.phone_number = data.get("phone_number")
             date_joined = data.get("date_joined")
-            logger.info("Date %s ...", date_joined)
             if date_joined:
-                self.date_joined = date_joined
+                self.date_joined = date.fromisoformat(date_joined)
             else:
                 self.date_joined = date.today()
         except KeyError as error:
@@ -138,7 +135,6 @@ class Account(db.Model, PersistentBase):
     @classmethod
     def find_by_name(cls, name):
         """Returns all Accounts with the given name
-
         Args:
             name (string): the name of the Accounts you want to match
         """
