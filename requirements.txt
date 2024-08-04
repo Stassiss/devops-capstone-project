@@ -27,3 +27,4 @@ coverage
 
 # Utilities
 httpie
+Flask-Talisman
